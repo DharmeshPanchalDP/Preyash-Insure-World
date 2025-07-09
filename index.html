@@ -130,6 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
         'Quick Claim Support',
         'Trusted by 500+ Clients'
       ],
+      whyusOnestop: '<strong>One Stop Insurance Solution</strong>',
       servicesTitle: 'Our Services',
       brandsTitle: 'Top Insurance Brands',
       reviewsTitle: 'Love Our Services? ❤️',
@@ -156,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
       quote: 'मुफ्त कोट प्राप्त करें',
       aboutTitle: 'हमारे बारे में',
       aboutDesc: 'हम गुजरात की विश्वसनीय एजेंसी हैं, जो LIC, HDFC Life, Tata AIA, ICICI, SBI Life और अधिक के लिए सेवाएं देती है।',
-      aboutDesc2: 'नमस्ते, मैं धर्मेश पंचाल हूं। मुझे भारतीय बीमा उद्योग में 15+ वर्ष का अनुभव है। मैं आपको भारत के शीर्ष बीमा प्रदाताओं से सर्वश्रेष्ठ बीमा चुनने और खरीदने में मदद कर सकता हूं। हम मल्टी ब्रांड मल्टी प्रोडक्ट सेल के लिए बीमा सलाहकार भी नियुक्त कर रहे हैं।',
+      aboutDesc2: 'नमस्ते, मैं धर्मेश पंचाल हूं। मुझे भारतीय बीमा उद्योग में 15+ वर्ष का अनुभव है। मैं आपको भारत के शीर्ष बीमा प्रदाताओं से सर्वश्रेष्ठ बीमा चुनने और खरीदने में मदद कर सकता हूं। हम मल्टी ब्रांड मल्टी प्रोडक्टsell के लिए बीमा सलाहकार भी नियुक्त कर रहे हैं।',
       whyus: 'प्रेयश इंश्योरेंस क्यों चुनें?',
       whyusList: [
         '15+ वर्षों का अनुभव',
@@ -164,6 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
         'त्वरित क्लेम सहायता',
         'विश्वासपात्र 500+ ग्राहक'
       ],
+      whyusOnestop: '<strong>वन स्टॉप इंश्योरेंस सॉल्यूशन</strong>',
       servicesTitle: 'हमारी सेवाएं',
       brandsTitle: 'शीर्ष बीमा ब्रांड्स',
       reviewsTitle: 'हमारी सेवाएं पसंद आईं? ❤️',
@@ -198,6 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
         'ઝડપી ક્લેમ સપોર્ટ',
         'વિશ્વાસુ 500+ ક્લાયન્ટ'
       ],
+      whyusOnestop: '<strong>વન સ્ટોપ ઇન્શ્યોરન્સ સોલ્યુશન</strong>',
       servicesTitle: 'અમારી સેવાઓ',
       brandsTitle: 'ટોપ ઇન્શ્યોરન્સ બ્રાન્ડ્સ',
       reviewsTitle: 'અમારી સેવાઓ ગમી? ❤️',
@@ -252,7 +255,15 @@ document.addEventListener('DOMContentLoaded', function() {
     var whyusH2 = document.querySelector('#whyus h2');
     if(whyusH2) whyusH2.textContent = t.whyus;
     const whyusList = document.querySelectorAll('#whyus ul li');
-    if(whyusList && t.whyusList) t.whyusList.forEach((item, i) => { if(whyusList[i]) whyusList[i].innerHTML = item; });
+    if(whyusList && t.whyusList) {
+      whyusList.forEach((li, i) => {
+        if (i === 2) {
+          li.innerHTML = t.whyusOnestop || 'One Stop Insurance Solution';
+        } else if (t.whyusList[i < 2 ? i : i - 1]) {
+          li.innerHTML = t.whyusList[i < 2 ? i : i - 1];
+        }
+      });
+    }
     // Services section
     var servicesH2 = document.querySelector('#services h2');
     if(servicesH2) servicesH2.textContent = t.servicesTitle;
@@ -388,7 +399,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <option value="Female">Female</option>
         <option value="Transgender">Transgender</option>
       </select>
-      <input type="email" name="email" placeholder="Email (optional)" style="width:100%;margin-bottom:10px;padding:8px 12px;border-radius:8px;border:1px solid #bbb;" />
+      <input type="email" name="email" placeholder="Email (required)" required style="width:100%;margin-bottom:10px;padding:8px 12px;border-radius:8px;border:1px solid #bbb;" />
       <select id="popupInsuranceType" name="insuranceType" required style="width:100%;margin-bottom:10px;padding:8px 12px;border-radius:8px;border:1px solid #bbb;">
         <option value="">Select Insurance Type</option>
         <option value="life">Life Insurance</option>
@@ -478,6 +489,7 @@ document.addEventListener('DOMContentLoaded', function() {
   <ul>
     <li><span><strong>15+ Years of Experience</strong></span></li>
     <li>Compare <strong>15+ Top Brands</strong></li>
+    <li><strong>One Stop Insurance Solution</strong></li>
     <li><strong>Quick Claim Support</strong></li>
     <li>Trusted by <strong>500+ Clients</strong></li>
   </ul>
@@ -775,7 +787,29 @@ document.getElementById('popupInsuranceType').addEventListener('change', filterP
 // Form submit handler (demo only)
 document.getElementById('quotePopupForm').onsubmit = function(e) {
   e.preventDefault();
-  document.getElementById('quotePopupMsg').textContent = 'Thank you! We will contact you soon.';
+  var form = e.target;
+  var name = form.name.value.trim();
+  var phone = form.phone.value.trim();
+  var whatsapp = form.whatsapp.value.trim();
+  var dob = form.dob.value.trim();
+  var gender = form.gender.value;
+  var email = form.email.value.trim();
+  var insuranceType = form.insuranceType.value;
+  var company = form.company.value;
+  // WhatsApp message formatting
+  var msg =
+    '*New Free Quote Request*%0A' +
+    'Name: ' + encodeURIComponent(name) + '%0A' +
+    'Phone: ' + encodeURIComponent(phone) + '%0A' +
+    'WhatsApp: ' + encodeURIComponent(whatsapp) + '%0A' +
+    'DOB: ' + encodeURIComponent(dob) + '%0A' +
+    'Gender: ' + encodeURIComponent(gender) + '%0A' +
+    'Email: ' + encodeURIComponent(email) + '%0A' +
+    'Insurance Type: ' + encodeURIComponent(insuranceType) + '%0A' +
+    'Company: ' + encodeURIComponent(company);
+  var waUrl = 'https://wa.me/919722574788?text=' + msg;
+  window.open(waUrl, '_blank');
+  document.getElementById('quotePopupMsg').textContent = 'Redirecting to WhatsApp...';
   setTimeout(function(){
     document.getElementById('quotePopupModal').style.display = 'none';
     document.getElementById('quotePopupForm').reset();
