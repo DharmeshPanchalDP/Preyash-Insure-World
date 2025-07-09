@@ -99,7 +99,7 @@
 </header>
 <script>
 // Animate logo sliding in from left on page load
-window.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
   var logo = document.getElementById('logoDP');
   logo.style.transform = 'translateX(-80px) scale(0.7)';
   setTimeout(function() {
@@ -212,8 +212,7 @@ window.addEventListener('DOMContentLoaded', function() {
     }
   };
   const langSel = document.getElementById('languageSelect');
-  langSel.addEventListener('change', function() {
-    const lang = langSel.value;
+  function updateLanguageTexts(lang) {
     const t = translations[lang] || translations['en'];
     // Navbar (update all nav links for language)
     var navLinks = document.querySelectorAll('nav ul li a');
@@ -225,35 +224,61 @@ window.addEventListener('DOMContentLoaded', function() {
       navLinks[4].textContent = t.contact;
     }
     // Main Title
-    document.getElementById('mainTitle').textContent = t.mainTitle;
+    var mainTitle = document.getElementById('mainTitle');
+    if(mainTitle) mainTitle.textContent = t.mainTitle;
     // Hero
-    document.querySelector('.hero h2').textContent = t.hero1;
-    document.querySelector('.hero p').textContent = t.hero2;
-    document.querySelector('.hero .btn').textContent = t.quote;
+    var heroH2 = document.querySelector('.hero h2');
+    if(heroH2) heroH2.textContent = t.hero1;
+    var heroP = document.querySelector('.hero p');
+    if(heroP) heroP.textContent = t.hero2;
+    var heroBtn = document.querySelector('.hero .btn');
+    if(heroBtn) heroBtn.textContent = t.quote;
+    // Floating Get a Free Quote button
+    var floatBtn = document.getElementById('openQuotePopupBtn');
+    if(floatBtn) floatBtn.textContent = t.quote;
+    // Popup modal title
+    var popupTitle = document.querySelector('#quotePopupModal h3');
+    if(popupTitle) popupTitle.textContent = t.quote;
+    // Popup submit button
+    var popupSubmit = document.querySelector('#quotePopupForm button[type="submit"]');
+    if(popupSubmit) popupSubmit.textContent = t.contactBtn;
     // About section
-    document.querySelector('#about h2').textContent = t.aboutTitle;
-    document.querySelectorAll('#about p')[0].textContent = t.aboutDesc;
-    document.querySelectorAll('#about p')[1].textContent = t.aboutDesc2;
+    var aboutH2 = document.querySelector('#about h2');
+    if(aboutH2) aboutH2.textContent = t.aboutTitle;
+    var aboutPs = document.querySelectorAll('#about p');
+    if(aboutPs[0]) aboutPs[0].textContent = t.aboutDesc;
+    if(aboutPs[1]) aboutPs[1].textContent = t.aboutDesc2;
     // Why Us section
-    document.querySelector('#whyus h2').textContent = t.whyus;
+    var whyusH2 = document.querySelector('#whyus h2');
+    if(whyusH2) whyusH2.textContent = t.whyus;
     const whyusList = document.querySelectorAll('#whyus ul li');
-    t.whyusList.forEach((item, i) => { if(whyusList[i]) whyusList[i].innerHTML = item; });
+    if(whyusList && t.whyusList) t.whyusList.forEach((item, i) => { if(whyusList[i]) whyusList[i].innerHTML = item; });
     // Services section
-    document.querySelector('#services h2').textContent = t.servicesTitle;
+    var servicesH2 = document.querySelector('#services h2');
+    if(servicesH2) servicesH2.textContent = t.servicesTitle;
     // Brands section
-    document.querySelector('#brands h2').textContent = t.brandsTitle;
+    var brandsH2 = document.querySelector('#brands h2');
+    if(brandsH2) brandsH2.textContent = t.brandsTitle;
     // Reviews section
-    document.querySelector('#reviews h2').textContent = t.reviewsTitle;
-    document.querySelector('#reviews p').textContent = t.reviewsDesc;
-    document.querySelector('.google-review-btn').textContent = t.reviewBtn;
+    var reviewsH2 = document.querySelector('#reviews h2');
+    if(reviewsH2) reviewsH2.textContent = t.reviewsTitle;
+    var reviewsP = document.querySelector('#reviews p');
+    if(reviewsP) reviewsP.textContent = t.reviewsDesc;
+    var reviewBtn = document.querySelector('.google-review-btn');
+    if(reviewBtn) reviewBtn.textContent = t.reviewBtn;
     // Contact section
-    document.querySelector('#contact h2').textContent = t.contactTitle;
+    var contactH2 = document.querySelector('#contact h2');
+    if(contactH2) contactH2.textContent = t.contactTitle;
     // Testimonials section
-    document.querySelector('#testimonials h2').textContent = t.testimonialsTitle;
-    document.querySelector('#testimonials .testimonial p').textContent = t.testimonial1;
-    document.querySelector('#testimonials .testimonial h4').textContent = t.testimonialName1;
+    var testimonialsH2 = document.querySelector('#testimonials h2');
+    if(testimonialsH2) testimonialsH2.textContent = t.testimonialsTitle;
+    var testimonialP = document.querySelector('#testimonials .testimonial p');
+    if(testimonialP) testimonialP.textContent = t.testimonial1;
+    var testimonialH4 = document.querySelector('#testimonials .testimonial h4');
+    if(testimonialH4) testimonialH4.textContent = t.testimonialName1;
     // Contact form button
-    document.querySelector('#quoteForm button[type="submit"]').textContent = t.contactBtn;
+    var contactFormBtn = document.querySelector('#quoteForm button[type="submit"]');
+    if(contactFormBtn) contactFormBtn.textContent = t.contactBtn;
     // Footer copyright (bottom)
     var footerBottom = document.querySelector('.footer-bottom');
     if(footerBottom) footerBottom.innerHTML = t.footer;
@@ -266,10 +291,7 @@ window.addEventListener('DOMContentLoaded', function() {
     // Profile section title
     var profileTitle = document.querySelector('#profile h2');
     if(profileTitle) profileTitle.textContent = t.profile || t.about;
-
     // Footer Visitor Count and Location Map headings
-    // Find all .footer-heading elements and update by order:
-    // 1st: Contact, 2nd: Visitor Count, 3rd: Location Map
     var footerHeadings = document.querySelectorAll('.footer-col .footer-heading');
     if (footerHeadings.length >= 3) {
       // Contact heading already set above
@@ -278,6 +300,11 @@ window.addEventListener('DOMContentLoaded', function() {
       // 3rd: Location Map
       footerHeadings[2].textContent = t.locationMap || 'Location Map';
     }
+  }
+  // Set initial language on page load
+  updateLanguageTexts(langSel.value);
+  langSel.addEventListener('change', function() {
+    updateLanguageTexts(langSel.value);
   });
 });
 </script>
@@ -334,7 +361,49 @@ window.addEventListener('DOMContentLoaded', function() {
   }
 </style>
 <div id="get-quote-btn-float" style="position: fixed; bottom: 98px; right: 28px; z-index: 10000;">
-  <a href="#contact" class="btn blinking-quote-btn" style="border-radius: 30px; box-shadow: 0 2px 12px rgba(0,0,0,0.13); padding: 14px 28px; font-size: 1.15rem; display: inline-block; margin-bottom: 10px; transition: background 0.2s;">Get a Free Quote</a>
+  <button id="openQuotePopupBtn" class="btn blinking-quote-btn" style="border-radius: 30px; box-shadow: 0 2px 12px rgba(0,0,0,0.13); padding: 14px 28px; font-size: 1.15rem; display: inline-block; margin-bottom: 10px; transition: background 0.2s;">Get a Free Quote</button>
+</div>
+
+<!-- Popup Modal for Get a Free Quote -->
+<div id="quotePopupModal" class="modal" style="display:none; position:fixed; z-index:10001; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.35); align-items:center; justify-content:center;">
+  <div class="modal-content" style="background:#fff; border-radius:18px; max-width:380px; width:95vw; margin:auto; padding:28px 18px 18px 18px; box-shadow:0 8px 32px rgba(0,0,0,0.18); position:relative;">
+    <span class="close" id="closeQuotePopupBtn" style="position:absolute; top:10px; right:18px; font-size:2rem; color:#007bff; cursor:pointer;">&times;</span>
+    <h3 style="color:#004080; text-align:center; margin-bottom:18px;">Get a Free Quote</h3>
+    <form id="quotePopupForm" autocomplete="off">
+      <input type="text" name="name" placeholder="Name" required style="width:100%;margin-bottom:10px;padding:8px 12px;border-radius:8px;border:1px solid #bbb;" />
+      <input type="tel" name="phone" placeholder="Phone Number" required maxlength="10" pattern="[0-9]{10}" inputmode="numeric" style="width:100%;margin-bottom:10px;padding:8px 12px;border-radius:8px;border:1px solid #bbb;" />
+      <div style="margin-bottom:10px;">
+        <input type="tel" name="whatsapp" id="popupWhatsapp" placeholder="WhatsApp Number" required maxlength="10" pattern="[0-9]{10}" inputmode="numeric" style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid #bbb; margin-bottom:0;" />
+        <div style="margin-top:6px;">
+          <label style="font-size:1rem; display:inline-flex; align-items:center; gap:6px; margin:0; white-space:nowrap;">
+            <input type="checkbox" id="sameAsPhonePopup" style="margin-right:4px; width:22px; height:22px; accent-color:#007bff;" />
+            <span>Same as Phone Number</span>
+          </label>
+        </div>
+      </div>
+      <input type="date" name="dob" placeholder="Date of Birth" required style="width:100%;margin-bottom:10px;padding:8px 12px;border-radius:8px;border:1px solid #bbb;" />
+      <select name="gender" required style="width:100%;margin-bottom:10px;padding:8px 12px;border-radius:8px;border:1px solid #bbb;">
+        <option value="">Select Gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Transgender">Transgender</option>
+      </select>
+      <input type="email" name="email" placeholder="Email (optional)" style="width:100%;margin-bottom:10px;padding:8px 12px;border-radius:8px;border:1px solid #bbb;" />
+      <select id="popupInsuranceType" name="insuranceType" required style="width:100%;margin-bottom:10px;padding:8px 12px;border-radius:8px;border:1px solid #bbb;">
+        <option value="">Select Insurance Type</option>
+        <option value="life">Life Insurance</option>
+        <option value="health">Health Insurance</option>
+        <option value="motor">Motor Insurance</option>
+        <option value="travel">Travel Insurance</option>
+        <option value="corporate">Corporate Insurance</option>
+      </select>
+      <select id="popupCompanySelect" name="company" required style="width:100%;margin-bottom:10px;padding:8px 12px;border-radius:8px;border:1px solid #bbb;">
+        <option value="">Select Insurance Company</option>
+      </select>
+      <button type="submit" style="width:100%;background:linear-gradient(135deg,#004080 60%,#007bff 100%);color:#fff;font-weight:bold;border:none;border-radius:8px;padding:10px 0;font-size:1.1rem;cursor:pointer;">Submit</button>
+      <p id="quotePopupMsg" style="margin-top:10px;font-size:1em;text-align:center;"></p>
+    </form>
+  </div>
 </div>
 
 
@@ -643,6 +712,77 @@ function shareVia(method) {
 }
 </script>
 
+<script>
+// Popup logic for Get a Free Quote button
+document.getElementById('openQuotePopupBtn').onclick = function() {
+  document.getElementById('quotePopupModal').style.display = 'flex';
+};
+document.getElementById('closeQuotePopupBtn').onclick = function() {
+  document.getElementById('quotePopupModal').style.display = 'none';
+  document.getElementById('quotePopupForm').reset();
+  document.getElementById('quotePopupMsg').textContent = '';
+};
+window.onclick = function(event) {
+  var modal = document.getElementById('quotePopupModal');
+  if (event.target === modal) {
+    modal.style.display = 'none';
+    document.getElementById('quotePopupForm').reset();
+    document.getElementById('quotePopupMsg').textContent = '';
+  }
+};
+// Same as Phone logic
+document.getElementById('sameAsPhonePopup').addEventListener('change', function() {
+  var phone = document.querySelector('#quotePopupForm input[name="phone"]').value;
+  var whatsapp = document.getElementById('popupWhatsapp');
+  if (this.checked) {
+    whatsapp.value = phone;
+    whatsapp.readOnly = true;
+    whatsapp.style.background = '#f3f3f3';
+  } else {
+    whatsapp.readOnly = false;
+    whatsapp.style.background = '';
+  }
+});
+document.querySelector('#quotePopupForm input[name="phone"]').addEventListener('input', function() {
+  var same = document.getElementById('sameAsPhonePopup');
+  var whatsapp = document.getElementById('popupWhatsapp');
+  if (same.checked) {
+    whatsapp.value = this.value;
+  }
+});
+// Insurance company filter logic (reuse from contact form)
+function filterPopupCompanies() {
+  var type = document.getElementById('popupInsuranceType').value;
+  var companySelect = document.getElementById('popupCompanySelect');
+  var options = {
+    life: ["LIC", "HDFC Life", "Tata AIA", "ICICI Prudential", "SBI Life"],
+    health: ["HDFC Ergo", "Niva Bupa", "Aditya Birla", "Star Health", "Care Health"],
+    motor: ["HDFC Ergo", "ICICI Lombard", "TATA AIG", "Bajaj Allianz", "Reliance"],
+    travel: ["HDFC Ergo", "ICICI Lombard", "TATA AIG", "Bajaj Allianz"],
+    corporate: ["HDFC Ergo", "ICICI Lombard", "TATA AIG", "Bajaj Allianz", "Oriental Insurance"]
+  };
+  companySelect.innerHTML = '<option value="">Select Insurance Company</option>';
+  if (options[type]) {
+    options[type].forEach(function(opt) {
+      var o = document.createElement('option');
+      o.value = opt;
+      o.textContent = opt;
+      companySelect.appendChild(o);
+    });
+  }
+}
+document.getElementById('popupInsuranceType').addEventListener('change', filterPopupCompanies);
+// Form submit handler (demo only)
+document.getElementById('quotePopupForm').onsubmit = function(e) {
+  e.preventDefault();
+  document.getElementById('quotePopupMsg').textContent = 'Thank you! We will contact you soon.';
+  setTimeout(function(){
+    document.getElementById('quotePopupModal').style.display = 'none';
+    document.getElementById('quotePopupForm').reset();
+    document.getElementById('quotePopupMsg').textContent = '';
+  }, 1800);
+};
+</script>
 <script src="script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script>AOS.init();</script>
