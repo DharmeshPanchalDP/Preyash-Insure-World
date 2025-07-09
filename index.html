@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function() {
       testimonialsTitle: 'What Our Clients Say',
       testimonial1: '"Got my policy in one day. Amazing support!"',
       testimonialName1: '- Dharmesh Panchal, Ahmedabad',
-      contactBtn: 'Request Quote',
+      contactBtn: 'Submit',
       footer: '© 2025 PREYASH INSURANCE SERVICES. All rights reserved.'
     },
     hi: {
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function() {
       testimonialsTitle: 'हमारे ग्राहक क्या कहते हैं',
       testimonial1: '"मुझे एक दिन में पॉलिसी मिल गई। शानदार सपोर्ट!"',
       testimonialName1: '- धर्मेश पंचाल, अहमदाबाद',
-      contactBtn: 'कोट प्राप्त करें',
+      contactBtn: 'Submit',
       footer: '© 2025 प्रेयश इंश्योरेंस सर्विसेज. सर्वाधिकार सुरक्षित.'
     },
     gu: {
@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function() {
       testimonialsTitle: 'અમારા ક્લાયન્ટ શું કહે છે',
       testimonial1: '"મને એક જ દિવસે પોલિસી મળી. અદ્ભુત સપોર્ટ!"',
       testimonialName1: '- ધર્મેશ પંચાલ, અમદાવાદ',
-      contactBtn: 'ક્વોટ મેળવો',
+      contactBtn: 'Submit',
       footer: '© 2025 પ્રેયશ ઇન્શ્યોરન્સ સર્વિસિસ. સર્વાધિકાર સુરક્ષિત.'
     }
   };
@@ -323,19 +323,19 @@ document.addEventListener('DOMContentLoaded', function() {
   /* Blinking animation for Get a Free Quote button - now matches site palette */
   @keyframes blink-glow {
     0%, 100% {
-      box-shadow: 0 0 18px 6px #007bff, 0 2px 12px rgba(0,0,0,0.13);
-      filter: brightness(1.12);
+      box-shadow: 0 0 10px 2px #007bff, 0 2px 8px rgba(0,0,0,0.10);
+      filter: brightness(1.05);
       background: linear-gradient(135deg,#004080 60%,#007bff 100%);
     }
     50% {
-      box-shadow: 0 0 32px 14px #ffea00, 0 2px 18px rgba(0,0,0,0.18);
-      filter: brightness(1.25);
+      box-shadow: 0 0 18px 6px #ffea00, 0 2px 12px rgba(0,0,0,0.13);
+      filter: brightness(1.13);
       background: linear-gradient(135deg,#007bff 60%,#004080 100%);
     }
   }
   #get-quote-btn-float .btn.blinking-quote-btn {
     animation: blink-glow 1.2s infinite;
-    border: 2.5px solid #ffea00;
+    border: 2px solid #ffea00;
     outline: 0;
     background: linear-gradient(135deg,#004080 60%,#007bff 100%) !important;
     color: #fff !important;
@@ -360,7 +360,7 @@ document.addEventListener('DOMContentLoaded', function() {
     transition: color 0.2s, text-shadow 0.2s;
   }
 </style>
-<div id="get-quote-btn-float" style="position: fixed; bottom: 98px; right: 28px; z-index: 10000;">
+<div id="get-quote-btn-float" style="position: fixed; bottom: 28px; right: 28px; z-index: 9999;">
   <button id="openQuotePopupBtn" class="btn blinking-quote-btn" style="border-radius: 30px; box-shadow: 0 2px 12px rgba(0,0,0,0.13); padding: 14px 28px; font-size: 1.15rem; display: inline-block; margin-bottom: 10px; transition: background 0.2s;">Get a Free Quote</button>
 </div>
 
@@ -577,7 +577,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </select>
 
     <textarea name="userQueryMain" placeholder="Your Query (max 150 characters)" maxlength="150" style="margin-top:10px;"></textarea>
-    <button type="submit">Request Quote</button>
+    <button type="submit">Submit</button>
     <p id="formMessage"></p>
   </form>
 </section>
@@ -624,8 +624,8 @@ document.addEventListener('DOMContentLoaded', function() {
 </footer> -->
 
 
-<!-- Share This Page Floating Button (bottom-right) -->
-<div id="share-float-btn" style="position: fixed; bottom: 28px; right: 28px; z-index: 9999;">
+<!-- Share This Page Floating Button (above Get a Free Quote) -->
+<div id="share-float-btn" style="position: fixed; bottom: 128px; right: 28px; z-index: 10000;">
   <button id="share-main-btn" style="background: linear-gradient(135deg,#007bff 60%,#00e0c6 100%); border: none; border-radius: 50%; box-shadow: 0 2px 12px rgba(0,0,0,0.18); width: 58px; height: 58px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: box-shadow 0.2s;">
     <img src="images/shareSVG.svg" alt="Share" width="32" height="32" />
   </button>
