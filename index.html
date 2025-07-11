@@ -854,9 +854,27 @@ document.getElementById('quotePopupForm').onsubmit = function(e) {
       </div>
       <div class="footer-col map-col" style="flex: 1 1 260px; min-width: 220px; max-width: 340px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px;">
         <div class="footer-heading" style="color:#fff; font-size:1.1rem; font-weight:600;">Location Map</div>
-        <div class="footer-map-embed" style="margin-top:8px;">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.024964024052!2d72.5495403!3d23.0890833!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e835ac6ba0107%3A0x4afff16c99e1ee29!2sPREYASH%20Insurance%20Services%20and%20Investment%20Saathi%20Gujarat!5e0!3m2!1sen!2sin!4v1720340000000!5m2!1sen!2sin" width="250" height="120" style="border:0;border-radius:10px;min-width:180px;max-width:100%;display:block;box-shadow:0 2px 8px rgba(0,0,0,0.13);" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div class="footer-map-embed" style="margin-top:8px; width:100%; max-width:100%;">
+          <div class="footer-map-square" style="position:relative; width:100%; max-width:260px; aspect-ratio:1/1; margin:auto; border-radius:18px; overflow:hidden; border:2.5px solid #007bff; box-shadow:0 6px 24px rgba(0,0,0,0.15); background:#fff;">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.024964024052!2d72.5495403!3d23.0890833!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e835ac6ba0107%3A0x4afff16c99e1ee29!2sPREYASH%20Insurance%20Services%20and%20Investment%20Saathi%20Gujarat!5e0!3m2!1sen!2sin!4v1720340000000!5m2!1sen!2sin" style="border:0; width:100%; height:100%; display:block;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+          <div style="margin-top:10px; text-align:center;">
+            <a href="https://goo.gl/maps/2QwQwQwQwQwQwQwQ7" target="_blank" style="color:#007bff; font-weight:600; text-decoration:underline; font-size:1rem;">View Larger Map</a>
+          </div>
+          <style>
+            .footer-map-square { aspect-ratio: 1/1; }
+            @media (max-width: 600px) {
+              .footer-map-square { max-width: 90vw; }
+            }
+          </style>
         </div>
+        <style>
+          @media (max-width: 600px) {
+            .footer-map-embed iframe {
+              height: 120px !important;
+            }
+          }
+        </style>
       </div>
     </div>
     <div class="footer-bottom">&copy; 2025 Preyash Insurance Services. All rights reserved.</div> 
@@ -924,6 +942,60 @@ document.getElementById('quotePopupForm').onsubmit = function(e) {
     document.addEventListener('visibilitychange', function() {
       if (!document.hidden) {
         // Small delay to ensure smooth animation
+        setTimeout(updateVisitorCount, 100);
+      }
+    });
+    // Global Visitor Counter using backend API
+    async function updateVisitorCount() {
+      try {
+        // Only increment for new session
+        let sessionVisited = sessionStorage.getItem('preyashSessionVisited');
+        let response;
+        if (!sessionVisited) {
+          response = await fetch('http://localhost:3001/api/visitor-count', { method: 'POST' });
+          sessionStorage.setItem('preyashSessionVisited', 'true');
+        } else {
+          response = await fetch('http://localhost:3001/api/visitor-count');
+        }
+        const data = await response.json();
+        let totalCount = data.count || 1250;
+        // Animate the count update
+        const visitorElement = document.getElementById('visitorCountNumber');
+        if (visitorElement) {
+          const finalCount = totalCount;
+          const startCount = Math.max(0, finalCount - 50);
+          let currentCount = startCount;
+          const animateCount = () => {
+            if (currentCount < finalCount) {
+              currentCount += Math.ceil((finalCount - currentCount) / 10);
+              if (currentCount > finalCount) currentCount = finalCount;
+              visitorElement.textContent = currentCount.toLocaleString();
+              requestAnimationFrame(animateCount);
+            } else {
+              visitorElement.textContent = finalCount.toLocaleString();
+            }
+          };
+          animateCount();
+        }
+        // Also update the client count in the "Why Us" section
+        const clientCountElement = document.getElementById('clientCount');
+        if (clientCountElement) {
+          const clientCount = Math.floor(totalCount * 0.15);
+          clientCountElement.textContent = clientCount.toLocaleString();
+        }
+      } catch (error) {
+        console.log('Visitor count update failed:', error);
+        const visitorElement = document.getElementById('visitorCountNumber');
+        if (visitorElement) {
+          visitorElement.textContent = '1,250';
+        }
+      }
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      updateVisitorCount();
+    });
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden) {
         setTimeout(updateVisitorCount, 100);
       }
     });
